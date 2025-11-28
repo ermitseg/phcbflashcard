@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>PTCB Drug Flashcards</title>
+  <title>PTCB Drug Flashcards – Detailed</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <!-- PWA bits (for install as app) -->
@@ -61,7 +61,7 @@
     }
 
     h1 {
-      font-size: 1.3rem;
+      font-size: 1.25rem;
       letter-spacing: 0.04em;
       text-transform: uppercase;
     }
@@ -82,7 +82,7 @@
     .card {
       margin-top: 0.3rem;
       flex: 1;
-      min-height: 220px;
+      min-height: 230px;
       background: radial-gradient(circle at top left, var(--accent-soft) 0, #020617 65%);
       border-radius: 1.3rem;
       border: 1px solid rgba(148, 163, 184, 0.8);
@@ -131,7 +131,7 @@
     }
 
     .heading {
-      font-size: 1rem;
+      font-size: 0.95rem;
       text-transform: uppercase;
       letter-spacing: 0.16em;
       color: var(--text-muted);
@@ -139,7 +139,7 @@
     }
 
     #brand, #generic {
-      font-size: 1.5rem;
+      font-size: 1.4rem;
       font-weight: 600;
     }
 
@@ -155,7 +155,7 @@
 
     .muted {
       color: var(--text-muted);
-      font-size: 0.8rem;
+      font-size: 0.78rem;
     }
 
     .footer-card {
@@ -236,9 +236,9 @@
   <div class="app">
     <div class="title-row">
       <h1>PTCB Drug Flashcards</h1>
-      <span class="pill">50 core meds</span>
+      <span class="pill">Detailed · Abbreviations explained</span>
     </div>
-    <p class="subtitle">Tap the card to flip • Use Next / Random to study.</p>
+    <p class="subtitle">Tap to flip · Front = brand and generic · Back = use + safety note with abbreviations written out.</p>
 
     <div class="card" id="card">
       <div class="row-top">
@@ -273,85 +273,399 @@
   </div>
 
   <script>
-    // 50 key PTCB drugs
+    // 50 key PTCB drugs – detailed explanations, abbreviations expanded
     const cards = [
-      // Statins / lipids
-      { brand: "Lipitor", generic: "Atorvastatin", use: "High cholesterol", category: "Statin", hint: "Lowers LDL" },
-      { brand: "Crestor", generic: "Rosuvastatin", use: "High cholesterol", category: "Statin", hint: "Muscle pain risk" },
-      { brand: "Zocor", generic: "Simvastatin", use: "High cholesterol", category: "Statin", hint: "Avoid grapefruit" },
-      { brand: "Pravachol", generic: "Pravastatin", use: "High cholesterol", category: "Statin", hint: "Lowers LDL" },
-      { brand: "Lopid", generic: "Gemfibrozil", use: "High triglycerides", category: "Lipid", hint: "Fibrate" },
+      // STATINS / LIPID LOWERING
+      {
+        brand: "Lipitor",
+        generic: "Atorvastatin",
+        category: "Statin (cholesterol-lowering)",
+        use: "Lowers high cholesterol and triglycerides to reduce risk of heart attack and stroke by blocking cholesterol production in the liver.",
+        hint: "Statin = cholesterol medicine; monitor for muscle pain or liver problems."
+      },
+      {
+        brand: "Crestor",
+        generic: "Rosuvastatin",
+        category: "Statin (cholesterol-lowering)",
+        use: "Treats high cholesterol and helps prevent heart and blood vessel disease by lowering low-density lipoprotein (LDL) cholesterol.",
+        hint: "Take once daily; report unexplained muscle pain, weakness, or dark urine."
+      },
+      {
+        brand: "Zocor",
+        generic: "Simvastatin",
+        category: "Statin (cholesterol-lowering)",
+        use: "Lowers LDL cholesterol and triglycerides to protect the heart and blood vessels.",
+        hint: "Avoid large amounts of grapefruit juice because it can increase side effects."
+      },
+      {
+        brand: "Pravachol",
+        generic: "Pravastatin",
+        category: "Statin (cholesterol-lowering)",
+        use: "Treats high cholesterol and helps prevent heart disease and stroke.",
+        hint: "Usually taken at night; works in the liver where cholesterol is made."
+      },
+      {
+        brand: "Lopid",
+        generic: "Gemfibrozil",
+        category: "Lipid-lowering (fibrate)",
+        use: "Lowers very high triglycerides to reduce the risk of pancreatitis (inflammation of the pancreas).",
+        hint: "Take 30 minutes before morning and evening meals; may be combined with a statin carefully."
+      },
 
-      // Blood pressure
-      { brand: "Tenormin", generic: "Atenolol", use: "Hypertension", category: "Beta blocker", hint: "Ends in -olol" },
-      { brand: "Lopressor", generic: "Metoprolol tartrate", use: "Hypertension/angina", category: "Beta blocker", hint: "Do not stop suddenly" },
-      { brand: "Toprol XL", generic: "Metoprolol succinate", use: "Hypertension/heart failure", category: "Beta blocker", hint: "Extended-release" },
-      { brand: "Inderal", generic: "Propranolol", use: "HTN, tremor, migraine", category: "Beta blocker", hint: "Non-selective" },
+      // BLOOD PRESSURE – BETA BLOCKERS
+      {
+        brand: "Tenormin",
+        generic: "Atenolol",
+        category: "Beta blocker (blood pressure and heart)",
+        use: "Treats high blood pressure (hypertension) and chest pain from reduced blood flow to the heart (angina).",
+        hint: "Beta blocker = slows heart rate and reduces workload on the heart; do not stop suddenly."
+      },
+      {
+        brand: "Lopressor",
+        generic: "Metoprolol tartrate",
+        category: "Beta blocker",
+        use: "Treats high blood pressure and chest pain and helps protect the heart after a heart attack.",
+        hint: "Immediate-release form; usually taken twice daily with food; may cause tiredness or dizziness."
+      },
+      {
+        brand: "Toprol XL",
+        generic: "Metoprolol succinate",
+        category: "Beta blocker (extended-release)",
+        use: "Once-daily extended-release tablet used for high blood pressure, chest pain, and heart failure.",
+        hint: "Do not crush or chew extended-release tablets; swallow whole."
+      },
+      {
+        brand: "Inderal",
+        generic: "Propranolol",
+        category: "Beta blocker (non-selective)",
+        use: "Treats high blood pressure, tremors, migraine prevention, and some anxiety symptoms.",
+        hint: "Non-selective beta blocker = affects heart and lungs; use carefully in people with asthma."
+      },
 
-      { brand: "Norvasc", generic: "Amlodipine", use: "Hypertension", category: "Calcium channel blocker", hint: "Can cause ankle swelling" },
-      { brand: "Procardia", generic: "Nifedipine", use: "Hypertension/angina", category: "Calcium channel blocker", hint: "Ends in -dipine" },
+      // CALCIUM CHANNEL BLOCKERS
+      {
+        brand: "Norvasc",
+        generic: "Amlodipine",
+        category: "Calcium channel blocker",
+        use: "Treats high blood pressure and chest pain by relaxing blood vessels so blood flows more easily.",
+        hint: "Common side effect is ankle or leg swelling."
+      },
+      {
+        brand: "Procardia",
+        generic: "Nifedipine",
+        category: "Calcium channel blocker",
+        use: "Treats high blood pressure and certain types of chest pain by relaxing and widening blood vessels.",
+        hint: "Do not bite or chew extended-release forms; may cause flushing or headache."
+      },
 
-      { brand: "Prinivil", generic: "Lisinopril", use: "Hypertension, heart failure", category: "ACE inhibitor", hint: "Dry cough, ↑K+" },
-      { brand: "Vasotec", generic: "Enalapril", use: "Hypertension", category: "ACE inhibitor", hint: "Ends in -pril" },
-      { brand: "Altace", generic: "Ramipril", use: "Hypertension", category: "ACE inhibitor", hint: "Kidney protection in diabetes" },
+      // ACE INHIBITORS
+      {
+        brand: "Prinivil",
+        generic: "Lisinopril",
+        category: "ACE inhibitor (angiotensin-converting enzyme)",
+        use: "Treats high blood pressure and heart failure and protects the kidneys in diabetes by relaxing blood vessels.",
+        hint: "Can cause a dry cough and high potassium; ACE = angiotensin-converting enzyme."
+      },
+      {
+        brand: "Vasotec",
+        generic: "Enalapril",
+        category: "ACE inhibitor",
+        use: "Used for high blood pressure and heart failure by blocking formation of angiotensin II, a substance that tightens blood vessels.",
+        hint: "Watch for cough, dizziness, and swelling of face or lips (rare serious allergic reaction called angioedema)."
+      },
+      {
+        brand: "Altace",
+        generic: "Ramipril",
+        category: "ACE inhibitor",
+        use: "Treats high blood pressure and reduces risk of heart attack and stroke in high-risk patients.",
+        hint: "May protect the kidneys; monitor blood pressure and kidney function."
+      },
 
-      { brand: "Cozaar", generic: "Losartan", use: "Hypertension", category: "ARB", hint: "Ends in -sartan" },
-      { brand: "Diovan", generic: "Valsartan", use: "Hypertension/heart failure", category: "ARB", hint: "Alternative to ACE-I" },
+      // ARBs
+      {
+        brand: "Cozaar",
+        generic: "Losartan",
+        category: "Angiotensin receptor blocker (ARB)",
+        use: "Treats high blood pressure and protects the kidneys in patients with type 2 diabetes and high blood pressure.",
+        hint: "ARB = blocks angiotensin II from tightening blood vessels; does not usually cause cough like ACE inhibitors."
+      },
+      {
+        brand: "Diovan",
+        generic: "Valsartan",
+        category: "Angiotensin receptor blocker (ARB)",
+        use: "Treats high blood pressure and heart failure and improves survival after a heart attack.",
+        hint: "May increase potassium; avoid salt substitutes that contain potassium unless instructed."
+      },
 
-      // Diuretics
-      { brand: "Lasix", generic: "Furosemide", use: "Edema, heart failure", category: "Loop diuretic", hint: "Strong; monitor K+" },
-      { brand: "Microzide", generic: "Hydrochlorothiazide", use: "Hypertension", category: "Thiazide diuretic", hint: "Take in morning" },
-      { brand: "Aldactone", generic: "Spironolactone", use: "Edema, HTN", category: "K-sparing diuretic", hint: "Can cause ↑K+" },
+      // DIURETICS
+      {
+        brand: "Lasix",
+        generic: "Furosemide",
+        category: "Loop diuretic (water pill)",
+        use: "Removes extra fluid in conditions like heart failure, liver disease, or kidney disease to reduce swelling and shortness of breath.",
+        hint: "Loop diuretic = strong water pill; can lower potassium and cause frequent urination—usually taken in the morning."
+      },
+      {
+        brand: "Microzide",
+        generic: "Hydrochlorothiazide",
+        category: "Thiazide diuretic",
+        use: "Treats high blood pressure and mild fluid retention by helping the kidneys remove salt and water.",
+        hint: "Take in the morning to avoid nighttime urination; may lower potassium and sodium."
+      },
+      {
+        brand: "Aldactone",
+        generic: "Spironolactone",
+        category: "Potassium-sparing diuretic",
+        use: "Treats swelling and high blood pressure and is used in heart failure by blocking aldosterone, a hormone that causes fluid retention.",
+        hint: "Potassium-sparing = can increase potassium; avoid extra potassium unless ordered."
+      },
 
-      // Thyroid
-      { brand: "Synthroid", generic: "Levothyroxine", use: "Hypothyroidism", category: "Thyroid", hint: "Take on empty stomach" },
+      // THYROID
+      {
+        brand: "Synthroid",
+        generic: "Levothyroxine",
+        category: "Thyroid hormone replacement",
+        use: "Replaces thyroid hormone in people with low thyroid (hypothyroidism) to restore normal energy and metabolism.",
+        hint: "Take on an empty stomach with water, usually 30–60 minutes before breakfast; do not change brand without checking with the prescriber."
+      },
 
-      // Diabetes
-      { brand: "Glucophage", generic: "Metformin", use: "Type 2 diabetes", category: "Antidiabetic", hint: "GI upset common" },
-      { brand: "Januvia", generic: "Sitagliptin", use: "Type 2 diabetes", category: "DPP-4 inhibitor", hint: "Oral med" },
-      { brand: "Amaryl", generic: "Glimepiride", use: "Type 2 diabetes", category: "Sulfonylurea", hint: "Can cause hypoglycemia" },
+      // DIABETES – ORAL MEDS AND INSULIN
+      {
+        brand: "Glucophage",
+        generic: "Metformin",
+        category: "Antidiabetic (biguanide)",
+        use: "First-line medicine for type 2 diabetes; decreases sugar made by the liver and improves how the body uses insulin.",
+        hint: "Take with food to reduce stomach upset; rarely can cause lactic acidosis, a serious buildup of lactic acid."
+      },
+      {
+        brand: "Januvia",
+        generic: "Sitagliptin",
+        category: "Antidiabetic (DPP-4 inhibitor)",
+        use: "Helps control blood sugar in type 2 diabetes by increasing natural hormone levels that tell the pancreas to release insulin.",
+        hint: "DPP-4 = dipeptidyl peptidase-4; usually taken once daily with or without food."
+      },
+      {
+        brand: "Amaryl",
+        generic: "Glimepiride",
+        category: "Antidiabetic (sulfonylurea)",
+        use: "Lowers blood sugar in type 2 diabetes by stimulating the pancreas to release more insulin.",
+        hint: "Can cause low blood sugar (hypoglycemia); eat regular meals and watch for sweating, shakiness, or confusion."
+      },
+      {
+        brand: "Humalog",
+        generic: "Insulin lispro",
+        category: "Rapid-acting insulin",
+        use: "Very rapid-acting insulin used to control blood sugar around meals in diabetes.",
+        hint: "Give within about 15 minutes before or right after eating; can cause low blood sugar if food is missed."
+      },
+      {
+        brand: "Lantus",
+        generic: "Insulin glargine",
+        category: "Long-acting insulin (basal)",
+        use: "Provides a steady level of insulin throughout the day and night to control fasting blood sugar in diabetes.",
+        hint: "Do not mix in the same syringe with other insulins; usually injected once daily at the same time each day."
+      },
 
-      { brand: "Humalog", generic: "Insulin lispro", use: "Rapid-acting insulin", category: "Insulin", hint: "Take with meals" },
-      { brand: "Lantus", generic: "Insulin glargine", use: "Long-acting insulin", category: "Insulin", hint: "Basal insulin" },
+      // RESPIRATORY
+      {
+        brand: "ProAir HFA",
+        generic: "Albuterol",
+        category: "Short-acting beta agonist (SABA) inhaler",
+        use: "Quick-relief inhaler that relaxes airway muscles to relieve sudden asthma symptoms such as wheezing and shortness of breath.",
+        hint: "Rescue inhaler, not for daily control; common side effects include fast heartbeat and shakiness."
+      },
+      {
+        brand: "Ventolin HFA",
+        generic: "Albuterol",
+        category: "Short-acting beta agonist (SABA) inhaler",
+        use: "Provides fast relief of bronchospasm in asthma and chronic obstructive pulmonary disease (COPD).",
+        hint: "Use a spacer if recommended; prime the inhaler if it has not been used for several days."
+      },
+      {
+        brand: "Advair",
+        generic: "Fluticasone and Salmeterol",
+        category: "Inhaled corticosteroid and long-acting beta agonist (ICS/LABA)",
+        use: "Maintenance inhaler for asthma or COPD that reduces airway inflammation and keeps airways open.",
+        hint: "Not a rescue inhaler; rinse mouth and spit after use to reduce risk of oral thrush (yeast infection)."
+      },
+      {
+        brand: "Singulair",
+        generic: "Montelukast",
+        category: "Leukotriene receptor blocker",
+        use: "Helps control asthma and allergy symptoms by blocking leukotrienes, chemicals that cause airway swelling.",
+        hint: "Usually taken once daily in the evening; not used for sudden asthma attacks."
+      },
 
-      // Respiratory
-      { brand: "ProAir HFA", generic: "Albuterol", use: "Asthma rescue", category: "SABA inhaler", hint: "Quick relief" },
-      { brand: "Ventolin HFA", generic: "Albuterol", use: "Asthma rescue", category: "SABA inhaler", hint: "May cause jitteriness" },
-      { brand: "Advair", generic: "Fluticasone/Salmeterol", use: "Asthma/COPD control", category: "ICS/LABA", hint: "Maintenance, not rescue" },
-      { brand: "Singulair", generic: "Montelukast", use: "Asthma, allergies", category: "Leukotriene blocker", hint: "Often taken at night" },
+      // ANTIDEPRESSANTS
+      {
+        brand: "Zoloft",
+        generic: "Sertraline",
+        category: "SSRI antidepressant",
+        use: "Treats depression, anxiety disorders, and post-traumatic stress disorder by increasing serotonin levels in the brain.",
+        hint: "SSRI = selective serotonin reuptake inhibitor; may take several weeks for full effect."
+      },
+      {
+        brand: "Prozac",
+        generic: "Fluoxetine",
+        category: "SSRI antidepressant",
+        use: "Used for depression, obsessive-compulsive disorder, and some eating disorders.",
+        hint: "Long half-life; withdrawal symptoms are less likely if a dose is missed."
+      },
+      {
+        brand: "Lexapro",
+        generic: "Escitalopram",
+        category: "SSRI antidepressant",
+        use: "Treats depression and generalized anxiety disorder with generally mild side effects.",
+        hint: "Take once daily; watch for mood changes or thoughts of self-harm, especially when starting."
+      },
+      {
+        brand: "Celexa",
+        generic: "Citalopram",
+        category: "SSRI antidepressant",
+        use: "Treats depression by increasing serotonin levels.",
+        hint: "Higher doses can affect heart rhythm; prescribers limit the maximum dose in many patients."
+      },
+      {
+        brand: "Cymbalta",
+        generic: "Duloxetine",
+        category: "SNRI antidepressant",
+        use: "Treats depression, anxiety, and certain types of nerve pain such as diabetic nerve pain.",
+        hint: "SNRI = serotonin and norepinephrine reuptake inhibitor; may raise blood pressure slightly."
+      },
+      {
+        brand: "Effexor",
+        generic: "Venlafaxine",
+        category: "SNRI antidepressant",
+        use: "Treats depression and anxiety disorders by increasing serotonin and norepinephrine.",
+        hint: "Can increase blood pressure; do not stop suddenly because withdrawal symptoms can occur."
+      },
 
-      // Antidepressants
-      { brand: "Zoloft", generic: "Sertraline", use: "Depression, anxiety", category: "SSRI", hint: "Takes weeks to work" },
-      { brand: "Prozac", generic: "Fluoxetine", use: "Depression", category: "SSRI", hint: "Long half-life" },
-      { brand: "Lexapro", generic: "Escitalopram", use: "Depression, anxiety", category: "SSRI", hint: "Well tolerated" },
-      { brand: "Celexa", generic: "Citalopram", use: "Depression", category: "SSRI", hint: "Monitor heart rhythm" },
-      { brand: "Cymbalta", generic: "Duloxetine", use: "Depression, nerve pain", category: "SNRI", hint: "Helps neuropathy" },
-      { brand: "Effexor", generic: "Venlafaxine", use: "Depression, anxiety", category: "SNRI", hint: "Can ↑ BP" },
+      // BENZODIAZEPINES (CONTROLLED – C-IV)
+      {
+        brand: "Xanax",
+        generic: "Alprazolam",
+        category: "Benzodiazepine · Schedule IV controlled substance (C-IV)",
+        use: "Short-term treatment of anxiety and panic attacks by slowing down the central nervous system.",
+        hint: "Can cause drowsiness and dependence; C-IV = Schedule IV controlled drug with abuse potential."
+      },
+      {
+        brand: "Ativan",
+        generic: "Lorazepam",
+        category: "Benzodiazepine · Schedule IV (C-IV)",
+        use: "Treats anxiety and is also used before procedures to calm patients.",
+        hint: "Use for short periods; avoid alcohol and driving until effects are known."
+      },
+      {
+        brand: "Valium",
+        generic: "Diazepam",
+        category: "Benzodiazepine · Schedule IV (C-IV)",
+        use: "Used for anxiety, muscle spasms, and seizure emergencies.",
+        hint: "Long-acting; risk of dependence and drowsiness—take exactly as prescribed."
+      },
 
-      // Benzodiazepines (C-IV)
-      { brand: "Xanax", generic: "Alprazolam", use: "Anxiety", category: "Benzodiazepine (C-IV)", hint: "Sedation, dependence" },
-      { brand: "Ativan", generic: "Lorazepam", use: "Anxiety", category: "Benzodiazepine (C-IV)", hint: "Short-term use" },
-      { brand: "Valium", generic: "Diazepam", use: "Anxiety, muscle spasms", category: "Benzodiazepine (C-IV)", hint: "Long acting" },
+      // PAIN / NSAIDS / OPIOIDS
+      {
+        brand: "Tylenol",
+        generic: "Acetaminophen (also called paracetamol)",
+        category: "Analgesic (pain reliever) and fever reducer",
+        use: "Relieves mild to moderate pain and reduces fever.",
+        hint: "Do not exceed 3,000–4,000 mg per day from all sources to avoid liver damage."
+      },
+      {
+        brand: "Motrin",
+        generic: "Ibuprofen",
+        category: "Nonsteroidal anti-inflammatory drug (NSAID)",
+        use: "Treats pain, fever, and inflammation such as from arthritis or menstrual cramps.",
+        hint: "Take with food to protect the stomach; NSAID = nonsteroidal anti-inflammatory drug."
+      },
+      {
+        brand: "Aleve",
+        generic: "Naproxen",
+        category: "NSAID pain reliever",
+        use: "Longer-acting NSAID used for pain and inflammation, especially arthritis.",
+        hint: "Take with food and a full glass of water; can increase risk of stomach bleeding and kidney problems."
+      },
+      {
+        brand: "Norco",
+        generic: "Hydrocodone and Acetaminophen",
+        category: "Opioid pain medicine · Schedule II (C-II)",
+        use: "Treats moderate to severe pain that does not respond to non-opioid medicines.",
+        hint: "C-II = Schedule II controlled substance with high abuse risk; may cause drowsiness, constipation, and dependence."
+      },
+      {
+        brand: "Percocet",
+        generic: "Oxycodone and Acetaminophen",
+        category: "Opioid pain medicine · Schedule II (C-II)",
+        use: "Relieves severe pain when other treatments are not enough.",
+        hint: "Very strong opioid; avoid alcohol and other sedatives; keep secure from others."
+      },
 
-      // Pain / NSAIDs
-      { brand: "Tylenol", generic: "Acetaminophen", use: "Pain, fever", category: "Analgesic", hint: "Max 3–4 g/day" },
-      { brand: "Motrin", generic: "Ibuprofen", use: "Pain, inflammation", category: "NSAID", hint: "Take with food" },
-      { brand: "Aleve", generic: "Naproxen", use: "Pain, arthritis", category: "NSAID", hint: "Longer acting NSAID" },
-      { brand: "Norco", generic: "Hydrocodone/Acetaminophen", use: "Moderate–severe pain", category: "Opioid (C-II)", hint: "Causes drowsiness, constipation" },
-      { brand: "Percocet", generic: "Oxycodone/Acetaminophen", use: "Severe pain", category: "Opioid (C-II)", hint: "High abuse risk" },
+      // ANTIBIOTICS
+      {
+        brand: "Amoxil",
+        generic: "Amoxicillin",
+        category: "Penicillin-type antibiotic",
+        use: "Treats many bacterial infections such as ear infections, sinus infections, and some respiratory and skin infections.",
+        hint: "Finish the full course even if feeling better; common side effect is mild diarrhea."
+      },
+      {
+        brand: "Augmentin",
+        generic: "Amoxicillin and Clavulanate",
+        category: "Penicillin antibiotic with beta-lactamase inhibitor",
+        use: "Treats infections caused by bacteria that make beta-lactamase enzymes, such as some sinus, ear, and skin infections.",
+        hint: "Take with food to reduce stomach upset; may cause more diarrhea than amoxicillin alone."
+      },
+      {
+        brand: "Keflex",
+        generic: "Cephalexin",
+        category: "Cephalosporin antibiotic",
+        use: "Treats skin infections, bone infections, and urinary tract infections caused by bacteria.",
+        hint: "Cephalosporins are related to penicillins; ask about penicillin allergy."
+      },
+      {
+        brand: "Zithromax",
+        generic: "Azithromycin",
+        category: "Macrolide antibiotic",
+        use: "Treats respiratory infections, some ear infections, and some sexually transmitted infections; often given as a 5-day “Z-Pak.”",
+        hint: "Take as directed even if only a few days; may cause stomach upset or diarrhea."
+      },
+      {
+        brand: "Cipro",
+        generic: "Ciprofloxacin",
+        category: "Fluoroquinolone antibiotic",
+        use: "Treats urinary tract infections and certain gastrointestinal and bone infections.",
+        hint: "Avoid taking with milk or antacids containing calcium, magnesium, or aluminum; rare risk of tendon rupture."
+      },
 
-      // Antibiotics
-      { brand: "Amoxil", generic: "Amoxicillin", use: "Bacterial infections", category: "Penicillin antibiotic", hint: "Finish full course" },
-      { brand: "Augmentin", generic: "Amoxicillin/Clavulanate", use: "Resistant infections", category: "Penicillin combo", hint: "Take with food" },
-      { brand: "Keflex", generic: "Cephalexin", use: "Skin, UTI infections", category: "Cephalosporin", hint: "Possible cross allergy with penicillin" },
-      { brand: "Zithromax", generic: "Azithromycin", use: "Respiratory infections", category: "Macrolide", hint: "Common 'Z-Pak'" },
-      { brand: "Cipro", generic: "Ciprofloxacin", use: "UTI, some GI infections", category: "Fluoroquinolone", hint: "Avoid dairy/antacids" },
-
-      // GI
-      { brand: "Prilosec", generic: "Omeprazole", use: "GERD, heartburn", category: "PPI", hint: "Take before breakfast" },
-      { brand: "Nexium", generic: "Esomeprazole", use: "GERD", category: "PPI", hint: "Not for immediate relief" },
-      { brand: "Pepcid", generic: "Famotidine", use: "Heartburn", category: "H2 blocker", hint: "OTC and Rx" },
-      { brand: "Zofran", generic: "Ondansetron", use: "Nausea/vomiting", category: "Antiemetic", hint: "May cause constipation" }
+      // GI / STOMACH
+      {
+        brand: "Prilosec",
+        generic: "Omeprazole",
+        category: "Proton pump inhibitor (PPI)",
+        use: "Treats heartburn and gastroesophageal reflux disease (GERD), also called acid reflux, by reducing stomach acid.",
+        hint: "Take before breakfast; PPI = proton pump inhibitor; long-term use may affect minerals like magnesium."
+      },
+      {
+        brand: "Nexium",
+        generic: "Esomeprazole",
+        category: "Proton pump inhibitor (PPI)",
+        use: "Treats GERD (acid reflux), stomach ulcers, and prevents ulcers from certain medicines.",
+        hint: "Usually taken once daily, at least 1 hour before a meal."
+      },
+      {
+        brand: "Pepcid",
+        generic: "Famotidine",
+        category: "Histamine-2 (H2) blocker",
+        use: "Treats and prevents heartburn and stomach ulcers by decreasing stomach acid.",
+        hint: "H2 blocker = blocks histamine type-2 receptors in the stomach; available over the counter and by prescription."
+      },
+      {
+        brand: "Zofran",
+        generic: "Ondansetron",
+        category: "Antiemetic (anti-nausea)",
+        use: "Prevents nausea and vomiting, especially from chemotherapy, radiation therapy, or surgery.",
+        hint: "Can cause constipation or headache; take exactly as directed by the prescriber."
+      }
     ];
 
     let currentIndex = 0;
@@ -381,19 +695,19 @@
       categoryChipEl.textContent = card.category;
 
       if (showingFront) {
-        sideLabelEl.textContent = "Front · Brand";
+        sideLabelEl.textContent = "Front · Brand & generic";
         mainLabelEl.textContent = "Brand";
         brandEl.textContent = card.brand;
-        extraLineEl.textContent = `Generic: ${card.generic}`;
-        hintTextEl.textContent = "Tap the card or Flip to see use.";
+        extraLineEl.textContent = `Generic name: ${card.generic}`;
+        hintTextEl.textContent = "Tap the card or Flip to see full use and safety explanation.";
         sideStatusEl.textContent = "Brand";
       } else {
-        sideLabelEl.textContent = "Back · Generic & use";
-        mainLabelEl.textContent = "Generic";
+        sideLabelEl.textContent = "Back · Use & safety";
+        mainLabelEl.textContent = "Use";
         brandEl.textContent = card.generic;
-        extraLineEl.textContent = `Use: ${card.use} · Hint: ${card.hint}`;
-        hintTextEl.textContent = "Tap the card or Flip to go back.";
-        sideStatusEl.textContent = "Generic / use";
+        extraLineEl.textContent = `Use: ${card.use}  |  Safety note: ${card.hint}`;
+        hintTextEl.textContent = "Tap the card or Flip to go back to the brand side.";
+        sideStatusEl.textContent = "Detailed explanation";
       }
     }
 
