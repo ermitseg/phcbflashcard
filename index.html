@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>PTCB Drug Flashcards</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- PWA meta -->
+  <meta name="theme-color" content="#0f172a" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="icon-192.png" />
+
+  <style>
+    /* --- same CSS as before --- */
+    :root {
+      --bg: #0f172a;
+      --card-bg: #111827;
+      --accent: #22c55e;
+      --accent-soft: rgba(34, 197, 94, 0.14);
+      --text-main: #f9fafb;
+      --text-muted: #9ca3af;
+      --border-subtle: #1f2937;
+      --danger: #ef4444;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+      background: radial-gradient(circle at top, #1e293b 0, #020617 55%);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+
+    .app-shell {
+      width: 100%;
+      max-width: 960px;
+      background: rgba(15, 23, 42, 0.95);
+      border-radius: 1.5rem;
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      box-shadow:
+        0 24px 60px rgba(15, 23, 42, 0.9),
+        0 0 0 1px rgba(148, 163, 184, 0.15);
+      padding: 1.75rem 1.5rem 1.75rem;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      gap: 1.25rem;
+    }
+
+    @media (min-width: 768px) {
+      .app-shell {
+        padding: 2rem 2.25rem 2rem;
+      }
+    }
+
+    .app-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .title-block h1 {
+      font-size: 1.25rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .pill {
+      font-size: 0.75rem;
+      padding: 0.2rem 0.55rem;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      color: var(--text-muted);
+    }
+
+    .subtitle {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 0.2rem;
+    }
+
+    .controls-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      align-items: center;
+      justify-content: flex-end;
+    }
+
+    select,
+    input[type="text"] {
+      background: rgba(15, 23, 42, 0.9);
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      color: var(--text-main);
+      font-size: 0.85rem;
+      padding: 0.5rem 0.75rem;
+      outline: none;
+      min-width: 140px;
+    }
+
+    input[type="text"] {
+      min-width: 170px;
+    }
+
+    select:focus,
+    input[type="text"]:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.4);
+    }
+
+    .flashcard-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.5rem 0 0.75rem;
+    }
+
+    .flashcard {
+      width: min(420px, 100%);
+      height: 260px;
+      perspective: 1200px;
+      cursor: pointer;
+    }
+
+    .flashcard-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+      transition: transform 0.45s cubic-bezier(0.22, 0.61, 0.36, 1);
+    }
+
+    .flashcard-inner.is-flipped {
+      transform: rotateY(180deg);
+    }
+
+    .flash-face {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      background: radial-gradient(circle at top left, #22c55e1f 0, #020617 65%);
+      border-radius: 1.25rem;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      padding: 1.1rem 1.3rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow:
+        0 18px 35px rgba(15, 23, 42, 0.9),
+        0 0 0 1px rgba(148, 163, 184, 0.2);
+    }
+
+    .flash-face.back {
+      transform: rotateY(180deg);
+      background: radial-gradient(circle at top right, #22c55e2a 0, #020617 70%);
+    }
+
+    .chip-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .category-chip {
+      padding: 0.1rem 0.55rem;
+      border-radius: 999px;
+      background: rgba(34, 197, 94, 0.12);
+      color: #bbf7d0;
+      border: 1px solid rgba(34, 197, 94, 0.5);
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+      font-weight: 500;
+    }
+
+    .side-label {
+      padding: 0.1rem 0.55rem;
+      border-radius: 999px;
+      border: 1px dashed rgba(148, 163, 184, 0.6);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .drug-main {
+      margin-top: 0.65rem;
+    }
+
+    .drug-main h2 {
+      font-size: 1.5rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .tagline {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    .drug-secondary {
+      margin-top: 0.75rem;
+    }
+
+    .label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.13em;
+      color: var(--text-muted);
+      margin-bottom: 0.12rem;
+    }
+
+    .pill-text {
+      font-size: 0.95rem;
+    }
+
+    .footer-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 0.4rem;
+    }
+
+    .index-dot {
+      font-variant-numeric: tabular-nums;
+    }
+
+    .flip-hint {
+      font-size: 0.75rem;
+      opacity: 0.9;
+    }
+
+    .flip-hint span {
+      opacity: 0.7;
+    }
+
+    .controls-footer {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.75rem;
+      border-top: 1px solid rgba(31, 41, 55, 0.9);
+      padding-top: 0.9rem;
+    }
+
+    .primary-controls,
+    .secondary-controls {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    button {
+      border: none;
+      border-radius: 999px;
+      padding: 0.45rem 0.9rem;
+      font-size: 0.85rem;
+      background: rgba(15, 23, 42, 0.9);
+      color: var(--text-main);
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      transition:
+        background 0.2s ease,
+        transform 0.1s ease,
+        box-shadow 0.2s ease,
+        border-color 0.2s ease;
+    }
+
+    button:active {
+      transform: translateY(1px) scale(0.99);
+      box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #22c55e, #4ade80);
+      color: #022c22;
+      border-color: rgba(34, 197, 94, 0.8);
+      box-shadow: 0 0 18px rgba(34, 197, 94, 0.35);
+      font-weight: 600;
+    }
+
+    .btn-primary:hover {
+      box-shadow: 0 0 22px rgba(34, 197, 94, 0.5);
+    }
+
+    .btn-ghost {
+      background: rgba(15, 23, 42, 0.85);
+    }
+
+    .btn-ghost:hover {
+      background: rgba(15, 23, 42, 1);
+    }
+
+    .btn-danger {
+      border-color: rgba(248, 113, 113, 0.8);
+      color: #fecaca;
+      background: rgba(127, 29, 29, 0.12);
+    }
+
+    .btn-danger:hover {
+      background: rgba(127, 29, 29, 0.2);
+    }
+
+    .tiny-text {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    @media (max-width: 480px) {
+      .flashcard {
+        height: 240px;
+      }
+      .drug-main h2 {
+        font-size: 1.35rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="app-header">
+      <div class="title-block">
+        <h1>
+          PTCB Drug Flashcards
+          <span class="pill">CPhT Prep</span>
+        </h1>
+        <p class="subtitle">
+          Tap the card to flip • Filter by class • Search by brand or generic.
+        </p>
+      </div>
+      <div class="controls-row">
+        <select id="categoryFilter">
+          <option value="all">All Categories</option>
+        </select>
+        <input
+          type="text"
+          id="searchInput"
+          placeholder="Search brand / generic / use"
+        />
+      </div>
+    </header>
+
+    <main class="flashcard-container">
+      <div class="flashcard" id="flashcard">
+        <div class="flashcard-inner" id="flashcardInner">
+          <!-- FRONT -->
+          <div class="flash-face front" id="frontFace">
+            <div class="chip-row">
+              <span class="category-chip" id="frontCategory">CATEGORY</span>
+              <span class="side-label">Front · Brand name</span>
+            </div>
+            <div class="drug-main">
+              <h2 id="frontTitle">Loading…</h2>
+              <p class="tagline" id="frontTagline"></p>
+            </div>
+            <div class="drug-secondary">
+              <p class="label">Hint</p>
+              <p class="pill-text" id="frontHint"></p>
+            </div>
+            <div class="footer-row">
+              <span class="index-dot" id="cardIndex">0 / 0</span>
+              <span class="flip-hint">
+                Click to flip <span>⟲</span>
+              </span>
+            </div>
+          </div>
+
+          <!-- BACK -->
+          <div class="flash-face back" id="backFace">
+            <div class="chip-row">
+              <span class="category-chip" id="backCategory">CATEGORY</span>
+              <span class="side-label">Back · Generic &amp; use</span>
+            </div>
+            <div class="drug-main">
+              <p class="label">Brand</p>
+              <p class="pill-text" id="backBrand"></p>
+
+              <p class="label" style="margin-top: 0.5rem;">Generic</p>
+              <p class="pill-text" id="backGeneric"></p>
+            </div>
+            <div class="drug-secondary">
+              <p class="label">Use</p>
+              <p class="pill-text" id="backUse"></p>
+            </div>
+            <div class="footer-row">
+              <span class="index-dot" id="cardIndexBack">0 / 0</span>
+              <span class="flip-hint">
+                Click to flip back <span>⟲</span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="controls-footer">
+      <div class="primary-controls">
+        <button id="prevBtn" class="btn-ghost" type="button">
+          ◀ Prev
+        </button>
+        <button id="nextBtn" class="btn-primary" type="button">
+          Next ▶
+        </button>
+        <button id="randomBtn" class="btn-ghost" type="button">
+          🎲 Random
+        </button>
+      </div>
+      <div class="secondary-controls">
+        <button id="resetFiltersBtn" class="btn-danger" type="button">
+          Reset filters
+        </button>
+        <span class="tiny-text">
+          Tip: add more cards in the <strong>cards</strong> array in the code.
+        </span>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // === SAME JS CARD DATA & LOGIC AS BEFORE ===
+    const cards = [
+      /* ... same cards array I gave you earlier ... */
+    ];
+
+    let filteredCards = [...cards];
+    let currentIndex = 0;
+
+    const categoryFilterEl = document.getElementById("categoryFilter");
+    const searchInputEl = document.getElementById("searchInput");
+    const flashcardInnerEl = document.getElementById("flashcardInner");
+    const flashcardEl = document.getElementById("flashcard");
+
+    const frontCategoryEl = document.getElementById("frontCategory");
+    const backCategoryEl = document.getElementById("backCategory");
+    const frontTitleEl = document.getElementById("frontTitle");
+    const frontTaglineEl = document.getElementById("frontTagline");
+    const frontHintEl = document.getElementById("frontHint");
+    const backBrandEl = document.getElementById("backBrand");
+    const backGenericEl = document.getElementById("backGeneric");
+    const backUseEl = document.getElementById("backUse");
+    const cardIndexEl = document.getElementById("cardIndex");
+    const cardIndexBackEl = document.getElementById("cardIndexBack");
+
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    const randomBtn = document.getElementById("randomBtn");
+    const resetFiltersBtn = document.getElementById("resetFiltersBtn");
+
+    function buildCategoryOptions() {
+      const categories = Array.from(
+        new Set(cards.map((c) => c.category))
+      ).sort((a, b) => a.localeCompare(b));
+      categories.forEach((cat) => {
+        const opt = document.createElement("option");
+        opt.value = cat;
+        opt.textContent = cat;
+        categoryFilterEl.appendChild(opt);
+      });
+    }
+
+    function applyFilters() {
+      const category = categoryFilterEl.value;
+      const query = searchInputEl.value.trim().toLowerCase();
+
+      filteredCards = cards.filter((card) => {
+        const matchesCategory =
+          category === "all" || card.category === category;
+        const inText =
+          card.brand.toLowerCase().includes(query) ||
+          card.generic.toLowerCase().includes(query) ||
+          card.use.toLowerCase().includes(query) ||
+          (card.hint && card.hint.toLowerCase().includes(query));
+        return matchesCategory && (query === "" || inText);
+      });
+
+      if (filteredCards.length === 0) {
+        frontTitleEl.textContent = "No cards found";
+        frontTaglineEl.textContent =
+          "Try clearing the search or changing the category.";
+        frontHintEl.textContent = "";
+        backBrandEl.textContent = "";
+        backGenericEl.textContent = "";
+        backUseEl.textContent = "";
+        frontCategoryEl.textContent = "No results";
+        backCategoryEl.textContent = "No results";
+        cardIndexEl.textContent = "0 / 0";
+        cardIndexBackEl.textContent = "0 / 0";
+        return;
+      }
+
+      currentIndex = 0;
+      flashcardInnerEl.classList.remove("is-flipped");
+      renderCard();
+    }
+
+    function renderCard() {
+      if (filteredCards.length === 0) return;
+      const card = filteredCards[currentIndex];
+
+      frontCategoryEl.textContent = card.category;
+      backCategoryEl.textContent = card.category;
+      frontTitleEl.textContent = card.brand;
+      frontTaglineEl.textContent = card.generic;
+      frontHintEl.textContent = card.hint || "";
+
+      backBrandEl.textContent = card.brand;
+      backGenericEl.textContent = card.generic;
+      backUseEl.textContent = card.use;
+
+      const displayIndex = currentIndex + 1;
+      const total = filteredCards.length;
+      cardIndexEl.textContent = `${displayIndex} / ${total}`;
+      cardIndexBackEl.textContent = `${displayIndex} / ${total}`;
+    }
+
+    function showNext() {
+      if (filteredCards.length === 0) return;
+      currentIndex = (currentIndex + 1) % filteredCards.length;
+      flashcardInnerEl.classList.remove("is-flipped");
+      renderCard();
+    }
+
+    function showPrev() {
+      if (filteredCards.length === 0) return;
+      currentIndex =
+        (currentIndex - 1 + filteredCards.length) % filteredCards.length;
+      flashcardInnerEl.classList.remove("is-flipped");
+      renderCard();
+    }
+
+    function showRandom() {
+      if (filteredCards.length === 0) return;
+      let newIndex = currentIndex;
+      if (filteredCards.length > 1) {
+        while (newIndex === currentIndex) {
+          newIndex = Math.floor(Math.random() * filteredCards.length);
+        }
+      }
+      currentIndex = newIndex;
+      flashcardInnerEl.classList.remove("is-flipped");
+      renderCard();
+    }
+
+    flashcardEl.addEventListener("click", () => {
+      flashcardInnerEl.classList.toggle("is-flipped");
+    });
+
+    prevBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      showPrev();
+    });
+
+    nextBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      showNext();
+    });
+
+    randomBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      showRandom();
+    });
+
+    resetFiltersBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      categoryFilterEl.value = "all";
+      searchInputEl.value = "";
+      filteredCards = [...cards];
+      currentIndex = 0;
+      flashcardInnerEl.classList.remove("is-flipped");
+      renderCard();
+    });
+
+    categoryFilterEl.addEventListener("change", applyFilters);
+    searchInputEl.addEventListener("input", () => {
+      applyFilters();
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.target === searchInputEl) return;
+      if (e.key === "ArrowRight") {
+        showNext();
+      } else if (e.key === "ArrowLeft") {
+        showPrev();
+      } else if (e.key === " " || e.key === "Spacebar") {
+        e.preventDefault();
+        flashcardInnerEl.classList.toggle("is-flipped");
+      }
+    });
+
+    // Register service worker (for PWA)
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("sw.js").catch((err) => {
+          console.log("Service worker registration failed:", err);
+        });
+      });
+    }
+
+    buildCategoryOptions();
+    applyFilters();
+  </script>
+</body>
+</html>
