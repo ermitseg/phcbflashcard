@@ -5,22 +5,19 @@
   <title>PTCB Drug Flashcards</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <!-- PWA meta -->
+  <!-- PWA bits (for install as app) -->
   <meta name="theme-color" content="#0f172a" />
   <link rel="manifest" href="manifest.json" />
   <link rel="icon" href="icon-192.png" />
 
   <style>
-    /* --- same CSS as before --- */
     :root {
-      --bg: #0f172a;
-      --card-bg: #111827;
+      --bg: #020617;
+      --card-bg: #0f172a;
       --accent: #22c55e;
-      --accent-soft: rgba(34, 197, 94, 0.14);
+      --accent-soft: rgba(34, 197, 94, 0.15);
       --text-main: #f9fafb;
       --text-muted: #9ca3af;
-      --border-subtle: #1f2937;
-      --danger: #ef4444;
     }
 
     * {
@@ -32,7 +29,7 @@
     body {
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
         sans-serif;
-      background: radial-gradient(circle at top, #1e293b 0, #020617 55%);
+      background: radial-gradient(circle at top, #1e293b 0, #020617 60%);
       color: var(--text-main);
       min-height: 100vh;
       display: flex;
@@ -41,583 +38,418 @@
       padding: 1.5rem;
     }
 
-    .app-shell {
+    .app {
       width: 100%;
-      max-width: 960px;
-      background: rgba(15, 23, 42, 0.95);
+      max-width: 480px;
+      background: rgba(15, 23, 42, 0.96);
       border-radius: 1.5rem;
-      border: 1px solid rgba(148, 163, 184, 0.35);
+      border: 1px solid rgba(148, 163, 184, 0.5);
       box-shadow:
         0 24px 60px rgba(15, 23, 42, 0.9),
-        0 0 0 1px rgba(148, 163, 184, 0.15);
-      padding: 1.75rem 1.5rem 1.75rem;
-      display: grid;
-      grid-template-rows: auto 1fr auto;
-      gap: 1.25rem;
-    }
-
-    @media (min-width: 768px) {
-      .app-shell {
-        padding: 2rem 2.25rem 2rem;
-      }
-    }
-
-    .app-header {
+        0 0 0 1px rgba(148, 163, 184, 0.1);
+      padding: 1.5rem 1.3rem 1.6rem;
       display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
+      flex-direction: column;
       gap: 1rem;
     }
 
-    .title-block h1 {
-      font-size: 1.25rem;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      display: inline-flex;
-      align-items: center;
+    .title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
       gap: 0.5rem;
     }
 
+    h1 {
+      font-size: 1.3rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
     .pill {
-      font-size: 0.75rem;
-      padding: 0.2rem 0.55rem;
+      font-size: 0.7rem;
+      padding: 0.18rem 0.55rem;
       border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.5);
+      border: 1px solid rgba(148, 163, 184, 0.7);
       color: var(--text-muted);
     }
 
     .subtitle {
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       color: var(--text-muted);
-      margin-top: 0.2rem;
     }
 
-    .controls-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      align-items: center;
-      justify-content: flex-end;
-    }
-
-    select,
-    input[type="text"] {
-      background: rgba(15, 23, 42, 0.9);
-      border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.7);
-      color: var(--text-main);
-      font-size: 0.85rem;
-      padding: 0.5rem 0.75rem;
-      outline: none;
-      min-width: 140px;
-    }
-
-    input[type="text"] {
-      min-width: 170px;
-    }
-
-    select:focus,
-    input[type="text"]:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.4);
-    }
-
-    .flashcard-container {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 0.5rem 0 0.75rem;
-    }
-
-    .flashcard {
-      width: min(420px, 100%);
-      height: 260px;
-      perspective: 1200px;
-      cursor: pointer;
-    }
-
-    .flashcard-inner {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      transform-style: preserve-3d;
-      transition: transform 0.45s cubic-bezier(0.22, 0.61, 0.36, 1);
-    }
-
-    .flashcard-inner.is-flipped {
-      transform: rotateY(180deg);
-    }
-
-    .flash-face {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      backface-visibility: hidden;
-      background: radial-gradient(circle at top left, #22c55e1f 0, #020617 65%);
-      border-radius: 1.25rem;
-      border: 1px solid rgba(148, 163, 184, 0.6);
-      padding: 1.1rem 1.3rem;
+    .card {
+      margin-top: 0.3rem;
+      flex: 1;
+      min-height: 220px;
+      background: radial-gradient(circle at top left, var(--accent-soft) 0, #020617 65%);
+      border-radius: 1.3rem;
+      border: 1px solid rgba(148, 163, 184, 0.8);
+      padding: 1.1rem 1.1rem 1rem;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      cursor: pointer;
       box-shadow:
-        0 18px 35px rgba(15, 23, 42, 0.9),
-        0 0 0 1px rgba(148, 163, 184, 0.2);
+        0 18px 40px rgba(15, 23, 42, 0.9),
+        0 0 0 1px rgba(148, 163, 184, 0.18);
+      transition: transform 0.15s ease;
     }
 
-    .flash-face.back {
-      transform: rotateY(180deg);
-      background: radial-gradient(circle at top right, #22c55e2a 0, #020617 70%);
+    .card:active {
+      transform: translateY(1px) scale(0.99);
     }
 
-    .chip-row {
+    .row-top {
       display: flex;
       justify-content: space-between;
       font-size: 0.75rem;
       color: var(--text-muted);
     }
 
-    .category-chip {
+    .chip {
       padding: 0.1rem 0.55rem;
       border-radius: 999px;
-      background: rgba(34, 197, 94, 0.12);
-      color: #bbf7d0;
-      border: 1px solid rgba(34, 197, 94, 0.5);
+      border: 1px solid rgba(148, 163, 184, 0.8);
       text-transform: uppercase;
       letter-spacing: 0.09em;
-      font-weight: 500;
+    }
+
+    .chip-accent {
+      border-color: rgba(34, 197, 94, 0.8);
+      background: rgba(34, 197, 94, 0.18);
+      color: #bbf7d0;
     }
 
     .side-label {
-      padding: 0.1rem 0.55rem;
-      border-radius: 999px;
-      border: 1px dashed rgba(148, 163, 184, 0.6);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
+      opacity: 0.8;
     }
 
     .drug-main {
       margin-top: 0.65rem;
     }
 
-    .drug-main h2 {
-      font-size: 1.5rem;
-      margin-bottom: 0.25rem;
-    }
-
-    .tagline {
-      font-size: 0.9rem;
-      color: var(--text-muted);
-    }
-
-    .drug-secondary {
-      margin-top: 0.75rem;
-    }
-
-    .label {
-      font-size: 0.75rem;
+    .heading {
+      font-size: 1rem;
       text-transform: uppercase;
-      letter-spacing: 0.13em;
+      letter-spacing: 0.16em;
       color: var(--text-muted);
-      margin-bottom: 0.12rem;
+      margin-bottom: 0.3rem;
     }
 
-    .pill-text {
-      font-size: 0.95rem;
+    #brand, #generic {
+      font-size: 1.5rem;
+      font-weight: 600;
     }
 
-    .footer-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 0.75rem;
-      color: var(--text-muted);
+    #generic {
+      font-size: 1.25rem;
+    }
+
+    .line {
       margin-top: 0.4rem;
+      font-size: 0.9rem;
+      color: var(--text-main);
     }
 
-    .index-dot {
-      font-variant-numeric: tabular-nums;
+    .muted {
+      color: var(--text-muted);
+      font-size: 0.8rem;
     }
 
-    .flip-hint {
-      font-size: 0.75rem;
-      opacity: 0.9;
-    }
-
-    .flip-hint span {
-      opacity: 0.7;
-    }
-
-    .controls-footer {
+    .footer-card {
       display: flex;
-      flex-wrap: wrap;
       justify-content: space-between;
       align-items: center;
-      gap: 0.75rem;
-      border-top: 1px solid rgba(31, 41, 55, 0.9);
-      padding-top: 0.9rem;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 0.6rem;
     }
 
-    .primary-controls,
-    .secondary-controls {
+    .buttons {
       display: flex;
       flex-wrap: wrap;
-      align-items: center;
       gap: 0.5rem;
+      justify-content: space-between;
+      margin-top: 0.2rem;
     }
 
     button {
-      border: none;
       border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      background: rgba(15, 23, 42, 0.95);
+      color: var(--text-main);
       padding: 0.45rem 0.9rem;
       font-size: 0.85rem;
-      background: rgba(15, 23, 42, 0.9);
-      color: var(--text-main);
-      border: 1px solid rgba(148, 163, 184, 0.7);
-      cursor: pointer;
       display: inline-flex;
       align-items: center;
-      gap: 0.35rem;
+      gap: 0.25rem;
+      cursor: pointer;
       transition:
-        background 0.2s ease,
+        background 0.15s ease,
         transform 0.1s ease,
-        box-shadow 0.2s ease,
-        border-color 0.2s ease;
+        box-shadow 0.15s ease;
+    }
+
+    button:hover {
+      background: rgba(15, 23, 42, 1);
+      box-shadow: 0 0 0 1px rgba(148, 163, 184, 0.4);
     }
 
     button:active {
       transform: translateY(1px) scale(0.99);
-      box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+      box-shadow: none;
     }
 
-    .btn-primary {
+    .primary {
+      border-color: rgba(34, 197, 94, 0.9);
       background: linear-gradient(135deg, #22c55e, #4ade80);
       color: #022c22;
-      border-color: rgba(34, 197, 94, 0.8);
-      box-shadow: 0 0 18px rgba(34, 197, 94, 0.35);
       font-weight: 600;
+      box-shadow: 0 0 18px rgba(34, 197, 94, 0.4);
     }
 
-    .btn-primary:hover {
-      box-shadow: 0 0 22px rgba(34, 197, 94, 0.5);
+    .primary:hover {
+      box-shadow: 0 0 22px rgba(34, 197, 94, 0.55);
     }
 
-    .btn-ghost {
-      background: rgba(15, 23, 42, 0.85);
-    }
-
-    .btn-ghost:hover {
-      background: rgba(15, 23, 42, 1);
-    }
-
-    .btn-danger {
-      border-color: rgba(248, 113, 113, 0.8);
-      color: #fecaca;
-      background: rgba(127, 29, 29, 0.12);
-    }
-
-    .btn-danger:hover {
-      background: rgba(127, 29, 29, 0.2);
-    }
-
-    .tiny-text {
+    .meta-row {
+      display: flex;
+      justify-content: space-between;
       font-size: 0.75rem;
+      margin-top: 0.1rem;
       color: var(--text-muted);
     }
 
     @media (max-width: 480px) {
-      .flashcard {
-        height: 240px;
+      .app {
+        padding: 1.2rem 1rem 1.3rem;
       }
-      .drug-main h2 {
-        font-size: 1.35rem;
+      #brand, #generic {
+        font-size: 1.3rem;
       }
     }
   </style>
 </head>
 <body>
-  <div class="app-shell">
-    <header class="app-header">
-      <div class="title-block">
-        <h1>
-          PTCB Drug Flashcards
-          <span class="pill">CPhT Prep</span>
-        </h1>
-        <p class="subtitle">
-          Tap the card to flip • Filter by class • Search by brand or generic.
-        </p>
-      </div>
-      <div class="controls-row">
-        <select id="categoryFilter">
-          <option value="all">All Categories</option>
-        </select>
-        <input
-          type="text"
-          id="searchInput"
-          placeholder="Search brand / generic / use"
-        />
-      </div>
-    </header>
+  <div class="app">
+    <div class="title-row">
+      <h1>PTCB Drug Flashcards</h1>
+      <span class="pill">50 core meds</span>
+    </div>
+    <p class="subtitle">Tap the card to flip • Use Next / Random to study.</p>
 
-    <main class="flashcard-container">
-      <div class="flashcard" id="flashcard">
-        <div class="flashcard-inner" id="flashcardInner">
-          <!-- FRONT -->
-          <div class="flash-face front" id="frontFace">
-            <div class="chip-row">
-              <span class="category-chip" id="frontCategory">CATEGORY</span>
-              <span class="side-label">Front · Brand name</span>
-            </div>
-            <div class="drug-main">
-              <h2 id="frontTitle">Loading…</h2>
-              <p class="tagline" id="frontTagline"></p>
-            </div>
-            <div class="drug-secondary">
-              <p class="label">Hint</p>
-              <p class="pill-text" id="frontHint"></p>
-            </div>
-            <div class="footer-row">
-              <span class="index-dot" id="cardIndex">0 / 0</span>
-              <span class="flip-hint">
-                Click to flip <span>⟲</span>
-              </span>
-            </div>
-          </div>
-
-          <!-- BACK -->
-          <div class="flash-face back" id="backFace">
-            <div class="chip-row">
-              <span class="category-chip" id="backCategory">CATEGORY</span>
-              <span class="side-label">Back · Generic &amp; use</span>
-            </div>
-            <div class="drug-main">
-              <p class="label">Brand</p>
-              <p class="pill-text" id="backBrand"></p>
-
-              <p class="label" style="margin-top: 0.5rem;">Generic</p>
-              <p class="pill-text" id="backGeneric"></p>
-            </div>
-            <div class="drug-secondary">
-              <p class="label">Use</p>
-              <p class="pill-text" id="backUse"></p>
-            </div>
-            <div class="footer-row">
-              <span class="index-dot" id="cardIndexBack">0 / 0</span>
-              <span class="flip-hint">
-                Click to flip back <span>⟲</span>
-              </span>
-            </div>
-          </div>
-        </div>
+    <div class="card" id="card">
+      <div class="row-top">
+        <span class="chip chip-accent" id="categoryChip">Category</span>
+        <span class="side-label" id="sideLabel">Front · Brand</span>
       </div>
-    </main>
 
-    <footer class="controls-footer">
-      <div class="primary-controls">
-        <button id="prevBtn" class="btn-ghost" type="button">
-          ◀ Prev
-        </button>
-        <button id="nextBtn" class="btn-primary" type="button">
-          Next ▶
-        </button>
-        <button id="randomBtn" class="btn-ghost" type="button">
-          🎲 Random
-        </button>
+      <div class="drug-main">
+        <div class="heading" id="mainLabel">Brand</div>
+        <div id="brand">Loading…</div>
+
+        <div class="line" id="extraLine"></div>
       </div>
-      <div class="secondary-controls">
-        <button id="resetFiltersBtn" class="btn-danger" type="button">
-          Reset filters
-        </button>
-        <span class="tiny-text">
-          Tip: add more cards in the <strong>cards</strong> array in the code.
-        </span>
+
+      <div class="footer-card">
+        <span class="muted" id="hintText">Tap to flip ⟲</span>
+        <span id="indexText">0 / 0</span>
       </div>
-    </footer>
+    </div>
+
+    <div class="buttons">
+      <button id="prevBtn" type="button">◀ Prev</button>
+      <button id="flipBtn" type="button">⟲ Flip</button>
+      <button id="nextBtn" type="button" class="primary">Next ▶</button>
+      <button id="randomBtn" type="button">🎲 Random</button>
+    </div>
+
+    <div class="meta-row">
+      <span>Side: <span id="sideStatus">Brand</span></span>
+      <span>Cards: <span id="countStatus">0</span></span>
+    </div>
   </div>
 
   <script>
-    // === SAME JS CARD DATA & LOGIC AS BEFORE ===
+    // 50 key PTCB drugs
     const cards = [
-      /* ... same cards array I gave you earlier ... */
+      // Statins / lipids
+      { brand: "Lipitor", generic: "Atorvastatin", use: "High cholesterol", category: "Statin", hint: "Lowers LDL" },
+      { brand: "Crestor", generic: "Rosuvastatin", use: "High cholesterol", category: "Statin", hint: "Muscle pain risk" },
+      { brand: "Zocor", generic: "Simvastatin", use: "High cholesterol", category: "Statin", hint: "Avoid grapefruit" },
+      { brand: "Pravachol", generic: "Pravastatin", use: "High cholesterol", category: "Statin", hint: "Lowers LDL" },
+      { brand: "Lopid", generic: "Gemfibrozil", use: "High triglycerides", category: "Lipid", hint: "Fibrate" },
+
+      // Blood pressure
+      { brand: "Tenormin", generic: "Atenolol", use: "Hypertension", category: "Beta blocker", hint: "Ends in -olol" },
+      { brand: "Lopressor", generic: "Metoprolol tartrate", use: "Hypertension/angina", category: "Beta blocker", hint: "Do not stop suddenly" },
+      { brand: "Toprol XL", generic: "Metoprolol succinate", use: "Hypertension/heart failure", category: "Beta blocker", hint: "Extended-release" },
+      { brand: "Inderal", generic: "Propranolol", use: "HTN, tremor, migraine", category: "Beta blocker", hint: "Non-selective" },
+
+      { brand: "Norvasc", generic: "Amlodipine", use: "Hypertension", category: "Calcium channel blocker", hint: "Can cause ankle swelling" },
+      { brand: "Procardia", generic: "Nifedipine", use: "Hypertension/angina", category: "Calcium channel blocker", hint: "Ends in -dipine" },
+
+      { brand: "Prinivil", generic: "Lisinopril", use: "Hypertension, heart failure", category: "ACE inhibitor", hint: "Dry cough, ↑K+" },
+      { brand: "Vasotec", generic: "Enalapril", use: "Hypertension", category: "ACE inhibitor", hint: "Ends in -pril" },
+      { brand: "Altace", generic: "Ramipril", use: "Hypertension", category: "ACE inhibitor", hint: "Kidney protection in diabetes" },
+
+      { brand: "Cozaar", generic: "Losartan", use: "Hypertension", category: "ARB", hint: "Ends in -sartan" },
+      { brand: "Diovan", generic: "Valsartan", use: "Hypertension/heart failure", category: "ARB", hint: "Alternative to ACE-I" },
+
+      // Diuretics
+      { brand: "Lasix", generic: "Furosemide", use: "Edema, heart failure", category: "Loop diuretic", hint: "Strong; monitor K+" },
+      { brand: "Microzide", generic: "Hydrochlorothiazide", use: "Hypertension", category: "Thiazide diuretic", hint: "Take in morning" },
+      { brand: "Aldactone", generic: "Spironolactone", use: "Edema, HTN", category: "K-sparing diuretic", hint: "Can cause ↑K+" },
+
+      // Thyroid
+      { brand: "Synthroid", generic: "Levothyroxine", use: "Hypothyroidism", category: "Thyroid", hint: "Take on empty stomach" },
+
+      // Diabetes
+      { brand: "Glucophage", generic: "Metformin", use: "Type 2 diabetes", category: "Antidiabetic", hint: "GI upset common" },
+      { brand: "Januvia", generic: "Sitagliptin", use: "Type 2 diabetes", category: "DPP-4 inhibitor", hint: "Oral med" },
+      { brand: "Amaryl", generic: "Glimepiride", use: "Type 2 diabetes", category: "Sulfonylurea", hint: "Can cause hypoglycemia" },
+
+      { brand: "Humalog", generic: "Insulin lispro", use: "Rapid-acting insulin", category: "Insulin", hint: "Take with meals" },
+      { brand: "Lantus", generic: "Insulin glargine", use: "Long-acting insulin", category: "Insulin", hint: "Basal insulin" },
+
+      // Respiratory
+      { brand: "ProAir HFA", generic: "Albuterol", use: "Asthma rescue", category: "SABA inhaler", hint: "Quick relief" },
+      { brand: "Ventolin HFA", generic: "Albuterol", use: "Asthma rescue", category: "SABA inhaler", hint: "May cause jitteriness" },
+      { brand: "Advair", generic: "Fluticasone/Salmeterol", use: "Asthma/COPD control", category: "ICS/LABA", hint: "Maintenance, not rescue" },
+      { brand: "Singulair", generic: "Montelukast", use: "Asthma, allergies", category: "Leukotriene blocker", hint: "Often taken at night" },
+
+      // Antidepressants
+      { brand: "Zoloft", generic: "Sertraline", use: "Depression, anxiety", category: "SSRI", hint: "Takes weeks to work" },
+      { brand: "Prozac", generic: "Fluoxetine", use: "Depression", category: "SSRI", hint: "Long half-life" },
+      { brand: "Lexapro", generic: "Escitalopram", use: "Depression, anxiety", category: "SSRI", hint: "Well tolerated" },
+      { brand: "Celexa", generic: "Citalopram", use: "Depression", category: "SSRI", hint: "Monitor heart rhythm" },
+      { brand: "Cymbalta", generic: "Duloxetine", use: "Depression, nerve pain", category: "SNRI", hint: "Helps neuropathy" },
+      { brand: "Effexor", generic: "Venlafaxine", use: "Depression, anxiety", category: "SNRI", hint: "Can ↑ BP" },
+
+      // Benzodiazepines (C-IV)
+      { brand: "Xanax", generic: "Alprazolam", use: "Anxiety", category: "Benzodiazepine (C-IV)", hint: "Sedation, dependence" },
+      { brand: "Ativan", generic: "Lorazepam", use: "Anxiety", category: "Benzodiazepine (C-IV)", hint: "Short-term use" },
+      { brand: "Valium", generic: "Diazepam", use: "Anxiety, muscle spasms", category: "Benzodiazepine (C-IV)", hint: "Long acting" },
+
+      // Pain / NSAIDs
+      { brand: "Tylenol", generic: "Acetaminophen", use: "Pain, fever", category: "Analgesic", hint: "Max 3–4 g/day" },
+      { brand: "Motrin", generic: "Ibuprofen", use: "Pain, inflammation", category: "NSAID", hint: "Take with food" },
+      { brand: "Aleve", generic: "Naproxen", use: "Pain, arthritis", category: "NSAID", hint: "Longer acting NSAID" },
+      { brand: "Norco", generic: "Hydrocodone/Acetaminophen", use: "Moderate–severe pain", category: "Opioid (C-II)", hint: "Causes drowsiness, constipation" },
+      { brand: "Percocet", generic: "Oxycodone/Acetaminophen", use: "Severe pain", category: "Opioid (C-II)", hint: "High abuse risk" },
+
+      // Antibiotics
+      { brand: "Amoxil", generic: "Amoxicillin", use: "Bacterial infections", category: "Penicillin antibiotic", hint: "Finish full course" },
+      { brand: "Augmentin", generic: "Amoxicillin/Clavulanate", use: "Resistant infections", category: "Penicillin combo", hint: "Take with food" },
+      { brand: "Keflex", generic: "Cephalexin", use: "Skin, UTI infections", category: "Cephalosporin", hint: "Possible cross allergy with penicillin" },
+      { brand: "Zithromax", generic: "Azithromycin", use: "Respiratory infections", category: "Macrolide", hint: "Common 'Z-Pak'" },
+      { brand: "Cipro", generic: "Ciprofloxacin", use: "UTI, some GI infections", category: "Fluoroquinolone", hint: "Avoid dairy/antacids" },
+
+      // GI
+      { brand: "Prilosec", generic: "Omeprazole", use: "GERD, heartburn", category: "PPI", hint: "Take before breakfast" },
+      { brand: "Nexium", generic: "Esomeprazole", use: "GERD", category: "PPI", hint: "Not for immediate relief" },
+      { brand: "Pepcid", generic: "Famotidine", use: "Heartburn", category: "H2 blocker", hint: "OTC and Rx" },
+      { brand: "Zofran", generic: "Ondansetron", use: "Nausea/vomiting", category: "Antiemetic", hint: "May cause constipation" }
     ];
 
-    let filteredCards = [...cards];
     let currentIndex = 0;
+    let showingFront = true;
 
-    const categoryFilterEl = document.getElementById("categoryFilter");
-    const searchInputEl = document.getElementById("searchInput");
-    const flashcardInnerEl = document.getElementById("flashcardInner");
-    const flashcardEl = document.getElementById("flashcard");
-
-    const frontCategoryEl = document.getElementById("frontCategory");
-    const backCategoryEl = document.getElementById("backCategory");
-    const frontTitleEl = document.getElementById("frontTitle");
-    const frontTaglineEl = document.getElementById("frontTagline");
-    const frontHintEl = document.getElementById("frontHint");
-    const backBrandEl = document.getElementById("backBrand");
-    const backGenericEl = document.getElementById("backGeneric");
-    const backUseEl = document.getElementById("backUse");
-    const cardIndexEl = document.getElementById("cardIndex");
-    const cardIndexBackEl = document.getElementById("cardIndexBack");
+    const cardEl = document.getElementById("card");
+    const categoryChipEl = document.getElementById("categoryChip");
+    const sideLabelEl = document.getElementById("sideLabel");
+    const mainLabelEl = document.getElementById("mainLabel");
+    const brandEl = document.getElementById("brand");
+    const extraLineEl = document.getElementById("extraLine");
+    const hintTextEl = document.getElementById("hintText");
+    const indexTextEl = document.getElementById("indexText");
+    const sideStatusEl = document.getElementById("sideStatus");
+    const countStatusEl = document.getElementById("countStatus");
 
     const prevBtn = document.getElementById("prevBtn");
     const nextBtn = document.getElementById("nextBtn");
     const randomBtn = document.getElementById("randomBtn");
-    const resetFiltersBtn = document.getElementById("resetFiltersBtn");
+    const flipBtn = document.getElementById("flipBtn");
 
-    function buildCategoryOptions() {
-      const categories = Array.from(
-        new Set(cards.map((c) => c.category))
-      ).sort((a, b) => a.localeCompare(b));
-      categories.forEach((cat) => {
-        const opt = document.createElement("option");
-        opt.value = cat;
-        opt.textContent = cat;
-        categoryFilterEl.appendChild(opt);
-      });
-    }
-
-    function applyFilters() {
-      const category = categoryFilterEl.value;
-      const query = searchInputEl.value.trim().toLowerCase();
-
-      filteredCards = cards.filter((card) => {
-        const matchesCategory =
-          category === "all" || card.category === category;
-        const inText =
-          card.brand.toLowerCase().includes(query) ||
-          card.generic.toLowerCase().includes(query) ||
-          card.use.toLowerCase().includes(query) ||
-          (card.hint && card.hint.toLowerCase().includes(query));
-        return matchesCategory && (query === "" || inText);
-      });
-
-      if (filteredCards.length === 0) {
-        frontTitleEl.textContent = "No cards found";
-        frontTaglineEl.textContent =
-          "Try clearing the search or changing the category.";
-        frontHintEl.textContent = "";
-        backBrandEl.textContent = "";
-        backGenericEl.textContent = "";
-        backUseEl.textContent = "";
-        frontCategoryEl.textContent = "No results";
-        backCategoryEl.textContent = "No results";
-        cardIndexEl.textContent = "0 / 0";
-        cardIndexBackEl.textContent = "0 / 0";
-        return;
-      }
-
-      currentIndex = 0;
-      flashcardInnerEl.classList.remove("is-flipped");
-      renderCard();
-    }
+    countStatusEl.textContent = cards.length.toString();
 
     function renderCard() {
-      if (filteredCards.length === 0) return;
-      const card = filteredCards[currentIndex];
+      const card = cards[currentIndex];
+      indexTextEl.textContent = `${currentIndex + 1} / ${cards.length}`;
+      categoryChipEl.textContent = card.category;
 
-      frontCategoryEl.textContent = card.category;
-      backCategoryEl.textContent = card.category;
-      frontTitleEl.textContent = card.brand;
-      frontTaglineEl.textContent = card.generic;
-      frontHintEl.textContent = card.hint || "";
-
-      backBrandEl.textContent = card.brand;
-      backGenericEl.textContent = card.generic;
-      backUseEl.textContent = card.use;
-
-      const displayIndex = currentIndex + 1;
-      const total = filteredCards.length;
-      cardIndexEl.textContent = `${displayIndex} / ${total}`;
-      cardIndexBackEl.textContent = `${displayIndex} / ${total}`;
+      if (showingFront) {
+        sideLabelEl.textContent = "Front · Brand";
+        mainLabelEl.textContent = "Brand";
+        brandEl.textContent = card.brand;
+        extraLineEl.textContent = `Generic: ${card.generic}`;
+        hintTextEl.textContent = "Tap the card or Flip to see use.";
+        sideStatusEl.textContent = "Brand";
+      } else {
+        sideLabelEl.textContent = "Back · Generic & use";
+        mainLabelEl.textContent = "Generic";
+        brandEl.textContent = card.generic;
+        extraLineEl.textContent = `Use: ${card.use} · Hint: ${card.hint}`;
+        hintTextEl.textContent = "Tap the card or Flip to go back.";
+        sideStatusEl.textContent = "Generic / use";
+      }
     }
 
-    function showNext() {
-      if (filteredCards.length === 0) return;
-      currentIndex = (currentIndex + 1) % filteredCards.length;
-      flashcardInnerEl.classList.remove("is-flipped");
+    function nextCard() {
+      currentIndex = (currentIndex + 1) % cards.length;
+      showingFront = true;
       renderCard();
     }
 
-    function showPrev() {
-      if (filteredCards.length === 0) return;
-      currentIndex =
-        (currentIndex - 1 + filteredCards.length) % filteredCards.length;
-      flashcardInnerEl.classList.remove("is-flipped");
+    function prevCard() {
+      currentIndex = (currentIndex - 1 + cards.length) % cards.length;
+      showingFront = true;
       renderCard();
     }
 
-    function showRandom() {
-      if (filteredCards.length === 0) return;
+    function randomCard() {
       let newIndex = currentIndex;
-      if (filteredCards.length > 1) {
+      if (cards.length > 1) {
         while (newIndex === currentIndex) {
-          newIndex = Math.floor(Math.random() * filteredCards.length);
+          newIndex = Math.floor(Math.random() * cards.length);
         }
       }
       currentIndex = newIndex;
-      flashcardInnerEl.classList.remove("is-flipped");
+      showingFront = true;
       renderCard();
     }
 
-    flashcardEl.addEventListener("click", () => {
-      flashcardInnerEl.classList.toggle("is-flipped");
-    });
-
-    prevBtn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      showPrev();
-    });
-
-    nextBtn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      showNext();
-    });
-
-    randomBtn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      showRandom();
-    });
-
-    resetFiltersBtn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      categoryFilterEl.value = "all";
-      searchInputEl.value = "";
-      filteredCards = [...cards];
-      currentIndex = 0;
-      flashcardInnerEl.classList.remove("is-flipped");
+    function flipCard() {
+      showingFront = !showingFront;
       renderCard();
-    });
+    }
 
-    categoryFilterEl.addEventListener("change", applyFilters);
-    searchInputEl.addEventListener("input", () => {
-      applyFilters();
-    });
+    cardEl.addEventListener("click", flipCard);
+    flipBtn.addEventListener("click", flipCard);
+    nextBtn.addEventListener("click", nextCard);
+    prevBtn.addEventListener("click", prevCard);
+    randomBtn.addEventListener("click", randomCard);
 
     document.addEventListener("keydown", (e) => {
-      if (e.target === searchInputEl) return;
-      if (e.key === "ArrowRight") {
-        showNext();
-      } else if (e.key === "ArrowLeft") {
-        showPrev();
-      } else if (e.key === " " || e.key === "Spacebar") {
+      if (e.key === "ArrowRight") nextCard();
+      else if (e.key === "ArrowLeft") prevCard();
+      else if (e.key === " ") {
         e.preventDefault();
-        flashcardInnerEl.classList.toggle("is-flipped");
+        flipCard();
       }
     });
 
-    // Register service worker (for PWA)
+    // Initial render
+    renderCard();
+
+    // Register service worker for PWA if available
     if ("serviceWorker" in navigator) {
       window.addEventListener("load", () => {
-        navigator.serviceWorker.register("sw.js").catch((err) => {
-          console.log("Service worker registration failed:", err);
-        });
+        navigator.serviceWorker.register("sw.js").catch(() => {});
       });
     }
-
-    buildCategoryOptions();
-    applyFilters();
   </script>
 </body>
 </html>
